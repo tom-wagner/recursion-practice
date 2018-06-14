@@ -112,10 +112,39 @@ var powerOfTwo = function(n) {
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+  let reversedStr = '';
+
+  const recurse = (str) => {
+    reversedStr += str[str.length - 1];
+  }
+
+  while (string.length > 0) {
+    recurse(string);
+    string = string.slice(0, string.length - 1);
+  }
+
+  return reversedStr;
 };
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  let isPalindrome = true;
+
+  const recurse = (str) => {
+    if (str[0] !== str[str.length - 1]) {
+      return false;
+    }
+
+    if (str.length <= 2) {
+      return true;
+    }
+
+    if (str.length > 2) {
+      return recurse(str.slice(1, str.length - 1));
+    }
+  }
+
+  return recurse(string);
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -123,17 +152,64 @@ var palindrome = function(string) {
 // modulo(5,2) // 1
 // modulo(17,5) // 2
 // modulo(22,6) // 4
+
+// are there negative numbers?
+// is the first number always larger?
+// integers only?
+
 var modulo = function(x, y) {
+  const recurse = (x, y) => {
+    if (x <= y) {
+      return x;
+    } else {
+      return recurse(x - y, y);
+    }
+  }
+
+  return recurse(x, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
+
+// positive and negative numbers? Assuming positives
+// integers only? Assuming yes
+
 var multiply = function(x, y) {
+  let total = 0;
+  const recurse = (x, y) => {
+    if (x > 0) {
+      total += y;
+      return recurse(x - 1, y);
+    } else if (x < 0) {
+      total -= y;
+      return recurse(x + 1, y);
+    } else {
+      return total;
+    }
+  }
+
+  return recurse(x, y);
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods.
+
+// is x always larger than y?
+// is y a factor of x?
+// integers?
+// positive only?
+
 var divide = function(x, y) {
+  const recurse = (x, y, divisionCount) => {
+    if (x > 0) {
+      return recurse(x - y, y, ++divisionCount);
+    }
+
+    return divisionCount;
+  }
+
+  return recurse(x, y, 0);
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -141,7 +217,24 @@ var divide = function(x, y) {
 // gcd(4,36); // 4
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
-var gcd = function(x, y) {
+
+// always an answer?
+// always positive numbers?
+// smaller number on left?
+
+var gcd = function(x, y, numToCheck) {
+  if (!numToCheck) {
+    numToCheck = Math.min(x, y);
+  }
+  
+  let smaller = Math.min(x, y);
+  let larger = Math.max(x, y);
+
+  if (smaller % numToCheck === 0 && larger % numToCheck === 0) {
+    return numToCheck;
+  } else {
+    return gcd(x, y, numToCheck - 1);
+  }
 };
 
 // 15. Write a function that compares each character of two strings and returns true if
@@ -149,21 +242,31 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+  if (str1[0] === str2[0] && str1.length === 1 && str2.length === 1) {
+    return true;
+  } else if (str1[0] === str2[0]) {
+    return compareStr(str1.slice(1), str2.slice(1));
+  } else {
+    return false;
+  }
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -172,6 +275,7 @@ var buildList = function(value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function(n) {
+
 };
 
 // 20. Count the occurence of a value in a list.
